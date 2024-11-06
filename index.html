@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Teacher Management</title>
 </head>
+
 <body>
-    
+    <h1>Teacher Management</h1>
+    <div id="app">
+        <button id="getAllButton" v-on:click="getAllTeachers" class="btn btn-primary">Get all teachers</button>
+        <br />
+
+        <input v-model="nameToGetBy" placeholder="name" type="text" v-on:keyup.enter="getByName(nameToGetBy)" />
+        <button v-on:click="getByName(nameToGetBy)" class="btn btn-primary">Get by name</button>
+
+        <ul id="teacherlist" v-if="teachers.length">
+            <li v-for="teacher in teachers">
+                {{teacher.id}} {{teacher.name}} : {{ teacher.salary }}
+            </li>
+        </ul>
+        <div v-else>No teachers</div>
+
+        <h2>Get by ID (GET)</h2>
+        <input v-model="idToGetBy" placeholder="id" type="number" />
+        <button v-on:click="getById(idToGetBy)" class="btn btn-primary">Get by id</button>
+        <div v-if="singleTeacher">
+            {{singleTeacher.id}} {{singleTeacher.name}} {{singleTeacher.salary}}
+        </div>
+        <div v-else>No such teacher</div>
+
+        <h2>Delete (DELETE)</h2>
+        <input v-model.number="deleteId" placeholder="id" type="number" />
+        <button v-on:click="deleteTeacher(deleteId)" class="btn btn-warning">Delete</button>
+        {{deleteMessage}}
+
+        <h2>Add (POST)</h2>
+        <input v-model="addData.name" placeholder="name" type="text" />
+        <input v-model.number="addData.salary" placeholder="salary" type="number" />
+        <button v-on:click="addTeacher()" class="btn btn-success">Add</button>
+        <div>{{addMessage}}</div>
+
+        <h2>Update (PUT)</h2>
+        <input v-model.number="updateData.id" placeholder="id" type="number" />
+        <input v-model="updateData.name" placeholder="name" type="text" />
+        <input v-model.number="updateData.salary" placeholder="salary" type="number" />
+        <button v-on:click="updateTeacher()" class="btn btn-success">Update</button>
+        <div>{{updateMessage}}</div>
+    </div>
+    <script src="index.js"></script>
 </body>
+
 </html>
